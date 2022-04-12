@@ -1,0 +1,40 @@
+{
+  "name": "@drgn/api",
+  "private": true,
+  "scripts": {
+    "start": "node build/index.js",
+    "build": "esbuild src/index.ts --bundle --minify --format=cjs --platform=node --outfile=build/index.js",
+    "build:watch": "esbuild src/index.ts --bundle --minify --format=cjs --platform=node --watch --outfile=build/index.js",
+    "dev": "concurrently --kill-others \"npm run build:watch\" \"nodemon build/index.js\"",
+    "deploy": "node deploy.mjs",
+    "types": "tsc -w"
+  },
+  "dependencies": {
+    "cachu": "^4.0.1",
+    "discord.js": "^13.6.0",
+    "dotenv": "^16.0.0",
+    "fastify": "^3.27.4",
+    "fastify-compress": "^4.0.1",
+    "fastify-cookie": "^5.6.0",
+    "fastify-cors": "^6.0.3",
+    "fastify-helmet": "^7.0.1",
+    "fastify-jwt": "^4.1.3",
+    "fastify-oauth2": "^4.5.0",
+    "fastify-rate-limit": "^5.8.0",
+    "mongoose": "^6.2.8",
+    "nanoid": "^3.3.1",
+    "node-ssh": "^12.0.4"
+  },
+  "devDependencies": {
+    "@types/node": "^17.0.23",
+    "@types/ssh2": "^0.5.52",
+    "concurrently": "^7.0.0",
+    "esbuild": "^0.14.27",
+    "nodemon": "^2.0.15",
+    "typescript": "^4.6.3"
+  },
+  "engines": {
+    "node": ">=16",
+    "npm": ">=8"
+  }
+}
