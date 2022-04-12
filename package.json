@@ -2,15 +2,15 @@
   "name": "@drgn/api",
   "private": true,
   "scripts": {
-    "start": "node build/index.js",
     "build": "esbuild src/index.ts --bundle --minify --format=cjs --platform=node --outfile=build/index.js",
-    "build:watch": "esbuild src/index.ts --bundle --minify --format=cjs --platform=node --watch --outfile=build/index.js",
+    "watch": "esbuild src/index.ts --bundle --minify --format=cjs --platform=node --watch --outfile=build/index.js",
     "dev": "concurrently --kill-others \"npm run build:watch\" \"nodemon build/index.js\"",
     "deploy": "node deploy.mjs",
     "types": "tsc -w"
   },
   "dependencies": {
     "cachu": "^5.2.0",
+    "dayjs": "^1.11.0",
     "discord.js": "^13.6.0",
     "dotenv": "^16.0.0",
     "fastify": "^3.27.4",
