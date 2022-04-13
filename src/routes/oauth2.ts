@@ -12,7 +12,7 @@ interface ExtendedInstance extends FastifyInstance {
   }
 }
 
-export default async (api: ExtendedInstance) => {
+export default async (api: FastifyInstance) => {
   api.get('/login', async (request, reply) => {
     reply.redirect(307, request.cookies.token ? `${APP}/dashboard` : `${API}/oauth2/continue`)
   })
@@ -20,7 +20,7 @@ export default async (api: ExtendedInstance) => {
   api.get('/callback', async (request, reply) => {
     try {
       // fetch user from github
-      const accessToken = await api.github.getAccessTokenFromAuthorizationCodeFlow(request)
+      const accessToken = await (api as ExtendedInstance).github.getAccessTokenFromAuthorizationCodeFlow(request)
 
       const res = await fetch('https://api.github.com/user', {
         headers: {
