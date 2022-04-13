@@ -1,3 +1,4 @@
 {
-  "Something Went Wrong": 500
+  "Something Went Wrong": 500,
+  "Invalid Id": 400
 }
