@@ -55,7 +55,10 @@ export default async (api: FastifyInstance) => {
 
       // set cookie and redirect
       const token = await reply.jwtSign({
-        user: user._id
+        user: user._id,
+        bot: false
+      }, {
+        expiresIn: 12 * 3600 // 12 hours
       })
     
       reply.cookie('token', token, {
