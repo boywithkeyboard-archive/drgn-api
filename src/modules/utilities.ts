@@ -1,4 +1,3 @@
-import { FastifyRequest } from 'fastify'
 import mongoose from 'mongoose'
 import { URL } from 'url'
 
@@ -20,14 +19,13 @@ export const isValidObjectId = async (id: any) => {
   }
 }
 
-, validateObjectId = async (request: FastifyRequest) => {
-  // @ts-ignore
+, validateObjectId = async (request: { [key: string]: any }) => {
   const id = request.params.id
 
-  if (!id || id === '' || !mongoose.Types.ObjectId.isValid(id)) throw Error('INVALID_ID')
+  if (!id || id === '' || !mongoose.Types.ObjectId.isValid(id)) throw Error('Invalid Id')
 
   const newObjectId = new mongoose.Types.ObjectId(id)
-  if (newObjectId != id) throw new Error('INVALID_ID')
+  if (newObjectId != id) throw new Error('Invalid Id')
 }
 
 , readableSize = async (size: number) => {
