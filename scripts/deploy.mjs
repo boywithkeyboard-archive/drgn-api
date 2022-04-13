@@ -11,7 +11,7 @@ import { fileURLToPath } from 'url'
     host: process.env.HOST,
     port: 22,
     username: process.env.USERNAME,
-    password: process.env.PASSWORD
+    privateKey: process.env.SSH_KEY
   })
 
   await ssh.putFile(join(__dirname, '../build/index.js'), '/root/drgn/index.js')
