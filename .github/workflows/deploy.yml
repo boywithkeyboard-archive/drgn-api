@@ -1,0 +1,40 @@
+name: Deployment
+
+on:
+  push:
+    branches: [ current ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+        
+    steps:
+      - name: Git Checkout
+        uses: actions/checkout@v2
+        
+      - name: Use Node.js 16.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16.x
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Build Code
+        run: npm run build
+        env:
+          ENCRYPTION_KEY: ${{ secrets.ENCRYPTION_KEY }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          MONGO: ${{ secrets.MONGO }}
+          APP: https://drgnjs.com
+          API: https://api.drgnjs.com
+          PORT: ${{ secrets.PORT }}
+          GITHUB_CLIENT: ${{ secrets.GH_CLIENT }}
+          GITHUB_SECRET: ${{ secrets.GH_SECRET }}
+
+      - name: Deploy Code
+        run: npm run deploy
+        env:
+          HOST: ${{ secrets.HOST }}
+          USERNAME: ${{ secrets.USERNAME }}
+          SSH_KEY: ${{ secrets.SSH_KEY }}
