@@ -1,4 +1,5 @@
 {
   "Something Went Wrong": 500,
-  "Invalid Id": 400
+  "Invalid Id": 400,
+  "Invalid Session": 400
 }
