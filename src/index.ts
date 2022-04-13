@@ -13,10 +13,13 @@ import oauth2Router from './routes/oauth2'
 const api = fastify()
 
 api.register(compress)
+
 api.register(helmet)
+
 api.register(cors, {
   origin: '*'
 })
+
 api.register(jwt, {
   secret: JWT_SECRET,
   cookie: {
@@ -24,11 +27,14 @@ api.register(jwt, {
     signed: false
   }
 })
+
 api.register(cookies)
+
 api.register(rateLimit, {
   max: RATE_LIMIT,
   timeWindow: 60000 // a minute
 })
+
 api.register(oauth2, {
   name: 'github',
   scope: ['identify'],
