@@ -15,7 +15,7 @@ const api = fastify()
 api.register(compress)
 api.register(helmet)
 api.register(cors, {
-  origin
+  origin: '*'
 })
 api.register(jwt, {
   secret: JWT_SECRET,
