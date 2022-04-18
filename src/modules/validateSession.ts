@@ -1,19 +1,29 @@
 import { FastifyRequest } from 'fastify'
-import getCurrentUser from './getCurrentUser'
+import ThrowableError from './throwableError'
+import userSchema from '../schemas/user'
+import { userCache } from './cache'
 
-export default async (request: FastifyRequest) => {
+const currentUser = async (_id: string) => {
+  if (await userCache.get(_id)) return (await userCache.get(_id))?.value
+
+  const user = await userSchema.findById(_id)
+  await userCache.set(_id, user)
+
+  return user
+}
+
+const validateSession = async (request: FastifyRequest) => {
   try {
-    await request.jwtVerify()
-
-    const payload = await request.jwtDecode() as {
+    const payload = await request.jwtVerify() as {
       user: string,
       bot: boolean
     }
 
-    if (payload.bot) throw new Error('Invalid Session')
-
-    request['user'] = await getCurrentUser(payload.user)
+    request['currentUser'] = await currentUser(payload.user)
+    request['bot'] = payload.bot
   } catch (err) {
-    throw new Error('Invalid Session')
+    throw new ThrowableError('Invalid Session')
   }
 }
+
+export default validateSession
