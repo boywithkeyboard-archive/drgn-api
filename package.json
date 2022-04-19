@@ -2,9 +2,9 @@
   "name": "@drgn/api",
   "private": true,
   "scripts": {
-    "build": "node scripts/build.mjs",
-    "watch": "node scripts/watch.mjs",
-    "dev": "concurrently --kill-others \"npm run watch\" \"nodemon build/index.js\"",
+    "build": "esbuild src/index.ts --bundle --minify --platform=node --format=cjs --outfile=build/index.js",
+    "build:watch": "esbuild src/index.ts --bundle --minify --watch --platform=node --format=cjs --outfile=build/index.js",
+    "dev": "concurrently --kill-others \"npm run build:watch\" \"nodemon build/index.js\"",
     "deploy": "node deploy.mjs",
     "types": "tsc -w"
   },
