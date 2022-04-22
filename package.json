@@ -9,7 +9,7 @@
     "types": "tsc -w"
   },
   "dependencies": {
-    "cachu": "^5.4.0",
+    "cachu": "^5.4.1",
     "dayjs": "^1.11.1",
     "discord.js": "^13.6.0",
     "dotenv": "^16.0.0",
