@@ -15,7 +15,7 @@
     "@fastify/helmet": "^9.0.0",
     "@fastify/jwt": "^5.0.1",
     "@fastify/oauth2": "^5.0.0",
-    "@fastify/rate-limit": "^6.0.0",
+    "@fastify/rate-limit": "^6.0.1",
     "cachu": "^5.4.4",
     "dayjs": "^1.11.2",
     "discord.js": "^13.6.0",
