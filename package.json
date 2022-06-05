@@ -5,6 +5,8 @@
     "build": "esbuild src/index.ts --bundle --minify --platform=node --format=esm --external:./node_modules/* --outfile=dist/index.js",
     "build:watch": "esbuild src/index.ts --bundle --minify --watch --platform=node --format=esm --external:./node_modules/* --outfile=dist/index.js",
     "dev": "concurrently --kill-others \"npm run build:watch\" \"nodemon dist/index.js\"",
+    "lint": "eslint src --ext .ts",
+    "format": "eslint src --fix",
     "deploy": "node deploy.mjs",
     "types": "tsc -w"
   },
@@ -31,8 +33,13 @@
     "@types/ms": "^0.7.31",
     "@types/node": "^17.0.39",
     "@types/ssh2": "^0.5.52",
+    "@typescript-eslint/eslint-plugin": "^5.27.0",
+    "@typescript-eslint/parser": "^5.27.0",
     "concurrently": "^7.2.1",
     "esbuild": "^0.14.42",
+    "eslint": "^8.17.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-unused-imports": "^2.0.0",
     "nodemon": "^2.0.16",
     "typescript": "^4.7.2"
   },
