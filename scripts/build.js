@@ -9,11 +9,11 @@ await build({
   external: ['./node_modules/*'],
   outfile: 'dist/index.js',
   define: {
-    ENCRYPTION_KEY: JSON.parse(process.env.encryptionKey),
-    JWT_SECRET: JSON.parse(process.env.jwtSecret),
-    MONGO: JSON.parse(process.env.mongo),
-    PORT: JSON.parse(process.env.port),
+    ENCRYPTION_KEY: JSON.stringify(process.env.encryptionKey),
+    JWT_SECRET: JSON.stringify(process.env.jwtSecret),
+    MONGO: JSON.stringify(process.env.mongo),
+    PORT: JSON.stringify(process.env.port),
     DEV: false,
-    RATE_LIMIT: JSON.parse(process.env.rateLimit)
+    RATE_LIMIT: JSON.stringify(process.env.rateLimit)
   }
 })
