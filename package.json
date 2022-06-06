@@ -2,8 +2,8 @@
   "name": "@drgn/api",
   "private": true,
   "scripts": {
-    "build": "esbuild src/index.ts --bundle --minify --platform=node --format=esm --external:./node_modules/* --outfile=dist/index.js",
-    "build:watch": "esbuild src/index.ts --bundle --minify --watch --platform=node --format=esm --external:./node_modules/* --outfile=dist/index.js",
+    "build": "node scripts/build.js",
+    "build:watch": "node scripts/watch.js",
     "dev": "concurrently --kill-others \"npm run build:watch\" \"nodemon dist/index.js\"",
     "lint": "eslint src --ext .ts",
     "format": "eslint src --fix",
@@ -16,7 +16,7 @@
     "@fastify/helmet": "^8.1.0",
     "@fastify/jwt": "^5.0.1",
     "@fastify/rate-limit": "^6.0.1",
-    "cachu": "^5.4.4",
+    "cachu": "^6.0.0-canary.1",
     "dayjs": "^1.11.2",
     "discord.js": "^13.7.0",
     "dotenv": "^16.0.1",
@@ -26,8 +26,7 @@
     "nanoid": "^3.3.4",
     "node-ssh": "^12.0.4",
     "nodemailer": "^6.7.5",
-    "otplib": "^12.0.1",
-    "qrcode": "^1.5.0"
+    "otplib": "^12.0.1"
   },
   "devDependencies": {
     "@types/ms": "^0.7.31",
