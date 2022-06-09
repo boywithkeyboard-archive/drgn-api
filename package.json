@@ -11,7 +11,7 @@
     "types": "tsc -w"
   },
   "dependencies": {
-    "@fastify/compress": "^5.0.0",
+    "@fastify/compress": "^6.0.0",
     "@fastify/cors": "^8.0.0",
     "@fastify/helmet": "^8.1.0",
     "@fastify/jwt": "^5.0.1",
