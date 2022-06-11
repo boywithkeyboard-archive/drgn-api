@@ -7,4 +7,6 @@ declare global {
   const PORT: number
   const DEV: boolean
   const RATE_LIMIT: number
+  const EMAIL_USER: string
+  const EMAIL_PASSWORD: string
 }
