@@ -1,97 +1,122 @@
+import 'dotenv/config'
+import fastifyCompress from '@fastify/compress'
+import fastifyCors from '@fastify/cors'
+import fastifyHelmet from '@fastify/helmet'
+import fastifyJwt from '@fastify/jwt'
+import fastifyRateLimit from '@fastify/rate-limit'
 import fastify from 'fastify'
 import mongoose from 'mongoose'
-import compress from 'fastify-compress'
-import cors from 'fastify-cors'
-import helmet from 'fastify-helmet'
-import rateLimit from 'fastify-rate-limit'
-import oauth2 from 'fastify-oauth2'
-import cookies from 'fastify-cookie'
-import jwt from 'fastify-jwt'
-import errors from './errors.json'
-import oauth2Router from './routes/oauth2'
+import { globalCache } from './modules/cache'
+import authRouter from './routes/auth'
+import userRouter from './routes/users'
+import type { TypeBoxTypeProvider } from '@fastify/type-provider-typebox'
+import { Type } from '@sinclair/typebox'
 
-const api = fastify()
+const api = fastify({
+  ajv: {
+    customOptions: {
+      strict: 'log',
+      keywords: ['kind', 'modifier']
+    }
+  }
+}).withTypeProvider<TypeBoxTypeProvider>()
 
-api.register(compress)
+await api.register(fastifyCompress)
 
-api.register(helmet)
+await api.register(fastifyHelmet)
 
-api.register(cors, {
+await api.register(fastifyCors, {
   origin: '*'
 })
 
-api.register(jwt, {
-  secret: JWT_SECRET,
-  cookie: {
-    cookieName: 'token',
-    signed: false
-  }
+await api.register(fastifyJwt, {
+  secret: JWT_SECRET
 })
 
-api.register(cookies)
-
-api.register(rateLimit, {
+await api.register(fastifyRateLimit, {
   max: RATE_LIMIT,
   timeWindow: 60000 // a minute
 })
 
-api.register(oauth2, {
-  name: 'github',
-  scope: ['identify'],
-  credentials: {
-     client: {
-      id: GITHUB_CLIENT,
-      secret: GITHUB_SECRET
-    },
-    auth: oauth2.GITHUB_CONFIGURATION
-  },
-  startRedirectPath: '/oauth2/continue',
-  callbackUri: `${API}/oauth2/callback`
-})
-
 api.addHook('onRequest', async (request, reply) => {
-  reply.header('access-control-allow-credentials', true)
-  reply.header('cache-control', 'public, max-age=60')
+  reply.header('cache-control', 'public, max-age=30')
 })
 
-api.addContentTypeParser('application/json', { parseAs: 'string' }, async (request, body, done) => {
-  if (typeof body !== 'string') return
-  
-  try {
-    done(null, JSON.parse(body))
-  } catch (err) {
-    done(new Error('Something Went Wrong'), undefined)
-  }
+/*
+api.register(serverRouter, {
+  prefix: '/servers'
+})
+*/
+
+await api.register(userRouter, {
+  prefix: '/users'
 })
 
-api.register(oauth2Router, {
-  prefix: '/oauth2'
+await api.register(authRouter, {
+  prefix: '/'
 })
 
 api.setNotFoundHandler(async (request, reply) => {
   reply.statusCode = 404
   
   return {
-    code: 404,
+    statusCode: 404,
     message: 'Not Found'
   }
 })
 
-api.setErrorHandler(async (err, request, reply) => {
-  const code = errors[err.message]
-  reply.statusCode = code
-
+api.setErrorHandler(async err => {
   return {
-    code,
-    message: err.message
+    statusCode: 400,
+    error: 'Bad Request',
+    message: err.message ? err.message : 'something went wrong'
   }
 })
 
-const run = async () => {
-  await mongoose.connect(MONGO)
-  console.log('Successfully established a connection to the database.')
+api.get('/download', {
+  schema: {
+    querystring: Type.Object({
+      platform: Type.Optional(
+        Type.String()
+      ),
+      format: Type.Optional(
+        Type.String()
+      )
+    })
+  }
+}, async (request, reply) => {
+  const latestVersion = await globalCache.get('latestVersion')
 
-  await api.listen(PORT)
-  console.log('Successfully launched the API.')
-}
-run()
+  if (!latestVersion) {
+    const { tag_name } = await (await fetch('https://api.github.com/repos/drgnjs/drgn/releases/latest')).json()
+
+    await globalCache.set('latestVersion', tag_name)
+  }
+
+  if (request.query.platform === 'windows')
+    return reply.redirect(`https://github.com/drgnjs/drgn/releases/download/${latestVersion}/drgn_${latestVersion.replace('v', '')}_x64_en-US.msi`)
+
+  if (request.query.platform === 'linux')
+    if (request.query.format === 'deb')
+      return reply.redirect(`https://github.com/drgnjs/drgn/releases/download/${latestVersion}/drgn_${latestVersion.replace('v', '')}_amd64.deb`)
+    else if (request.query.format === 'tar.gz')
+      return reply.redirect(`https://github.com/drgnjs/drgn/releases/download/${latestVersion}/drgn.app.tar.gz`)
+    else if (request.query.format === 'AppImage')
+      return reply.redirect(`https://github.com/drgnjs/drgn/releases/download/${latestVersion}/drgn.app.tar.gz`)
+    else
+      return 'Invalid Format'
+
+  if (request.query.platform === 'mac')
+    return reply.redirect(`https://github.com/drgnjs/drgn/releases/download/${latestVersion}/drgn_${latestVersion.replace('v', '')}_x64.dmg`)
+
+  return 'Invalid Platform'
+})
+
+await mongoose.connect(MONGO)
+
+await api.listen({
+  host: '127.0.0.1',
+  port: PORT
+})
+
+console.log('API running!')
