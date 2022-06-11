@@ -10,8 +10,13 @@ const userCache = new MemoryCache({
 
 const globalCache = new MemoryCache()
 
+const loginAttemptsCache = new MemoryCache({
+  maxAge: '1h'
+})
+
 export {
   globalCache,
   unverifiedUserCache,
-  userCache
+  userCache,
+  loginAttemptsCache
 }
