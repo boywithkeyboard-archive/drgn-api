@@ -16,6 +16,8 @@ await build({
     MONGO: JSON.stringify(process.env.mongo),
     PORT: JSON.stringify(process.env.port),
     DEV: true,
-    RATE_LIMIT: JSON.stringify(process.env.rateLimit)
+    RATE_LIMIT: JSON.stringify(process.env.rateLimit),
+    EMAIL_USER: JSON.stringify(process.env.emailUser),
+    EMAIL_PASSWORD: JSON.stringify(process.env.emailPassword)
   }
 })
