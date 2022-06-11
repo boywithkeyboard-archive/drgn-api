@@ -8,6 +8,7 @@ export type UserDocument = {
   secret?: string // for 2fa
   passwordless?: boolean
   twoFactor?: boolean
+  signupNumber: number
   createdAt: string
   updatedAt: string
 }
@@ -17,7 +18,8 @@ const userSchema: Schema = new mongoose.Schema({
   password: String,
   secret: String,
   passwordless: Boolean,
-  twoFactor: Boolean
+  twoFactor: Boolean,
+  signupNumber: Number
 }, { timestamps: true })
 
 export default mongoose.model<UserDocument>('users', userSchema)
