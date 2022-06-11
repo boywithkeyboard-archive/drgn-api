@@ -13,7 +13,7 @@ export type UserDocument = {
   updatedAt: string
 }
 
-const userSchema: Schema = new mongoose.Schema({
+const schema: Schema = new mongoose.Schema({
   email: String,
   password: String,
   secret: String,
@@ -22,4 +22,6 @@ const userSchema: Schema = new mongoose.Schema({
   signupNumber: Number
 }, { timestamps: true })
 
-export default mongoose.model<UserDocument>('users', userSchema)
+const userSchema = mongoose.model<UserDocument>('users', schema)
+
+export default userSchema
