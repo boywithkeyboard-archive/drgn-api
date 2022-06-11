@@ -1,14 +1,14 @@
 import { Type } from '@sinclair/typebox'
+import { authenticator } from 'otplib'
 import { loginAttemptsCache, userCache } from '../modules/cache'
-import mailer from '../modules/mailer'
+import decrypt from '../modules/decrypt'
 import encrypt from '../modules/encrypt'
+import getUser from '../modules/getUser'
+import mailer from '../modules/mailer'
 import userSchema from '../schemas/user'
 import type { Router } from '../types'
-import getUser from '../modules/getUser'
-import decrypt from '../modules/decrypt'
-import { authenticator } from 'otplib'
 
-export default async (api: Router) => {
+const authRouter = async (api: Router) => {
   /* ................ /login ................ */
 
   api.post('/login', {
@@ -199,3 +199,5 @@ export default async (api: Router) => {
     })
   })
 }
+
+export default authRouter
