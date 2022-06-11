@@ -16,6 +16,8 @@
     "@fastify/helmet": "^9.1.0",
     "@fastify/jwt": "^6.1.0",
     "@fastify/rate-limit": "^7.0.0",
+    "@fastify/type-provider-typebox": "^1.0.0",
+    "@sinclair/typebox": "^0.23.5",
     "cachu": "^6.0.0-canary.1",
     "dayjs": "^1.11.3",
     "discord.js": "^13.8.0",
@@ -31,6 +33,7 @@
   "devDependencies": {
     "@types/ms": "^0.7.31",
     "@types/node": "^17.0.41",
+    "@types/nodemailer": "^6.4.4",
     "@types/ssh2": "^0.5.52",
     "@typescript-eslint/eslint-plugin": "^5.27.1",
     "@typescript-eslint/parser": "^5.27.1",
