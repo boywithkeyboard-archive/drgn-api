@@ -28,6 +28,8 @@ jobs:
           mongo: ${{ secrets.MONGO }}
           port: ${{ secrets.PORT }}
           rateLimit: ${{ secrets.RATE_LIMIT }}
+          emailUser: ${{ secrets.EMAIL_USER }}
+          emailPassword: ${{ secrets.EMAIL_PASSWORD }}
 
       - name: Deploy API
         run: npm run deploy
