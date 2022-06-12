@@ -1,4 +1,3 @@
-import 'dotenv/config'
 import fastifyCompress from '@fastify/compress'
 import fastifyCors from '@fastify/cors'
 import fastifyHelmet from '@fastify/helmet'
@@ -283,12 +282,12 @@ api.get('/download', {
     else if (request.query.format === 'AppImage')
       return reply.redirect(`https://github.com/drgnjs/drgn/releases/download/${latestVersion}/drgn.app.tar.gz`)
     else
-      return 'Invalid Format'
+      throw new Error('invalid format')
 
   if (request.query.platform === 'mac')
     return reply.redirect(`https://github.com/drgnjs/drgn/releases/download/${latestVersion}/drgn_${latestVersion.replace('v', '')}_x64.dmg`)
 
-  return 'Invalid Platform'
+  throw new Error('invalid platform')
 })
 
 /* ................ not found ................ */
@@ -298,7 +297,8 @@ api.setNotFoundHandler(async (request, reply) => {
   
   return {
     statusCode: 404,
-    message: 'Not Found'
+    error: 'not found',
+    message: 'not found'
   }
 })
 
