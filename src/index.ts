@@ -95,7 +95,7 @@ api.post('/login', {
 
   // block any further attempts
   if (loginAttempts && loginAttempts > 9)
-    throw new Error('too much tries, try again in ~1h')
+    throw new Error('too much tries')
 
   // send email notification on 10 attempts
   if (loginAttempts && loginAttempts === 10)
