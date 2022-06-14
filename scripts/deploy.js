@@ -8,10 +8,10 @@ import { fileURLToPath } from 'url'
   , ssh = new NodeSSH()
 
   await ssh.connect({
-    host: process.env.HOST,
+    host: process.env.host,
     port: 22,
-    username: process.env.USERNAME,
-    privateKey: process.env.SSH_KEY
+    username: process.env.username,
+    privateKey: process.env.privateKey
   })
 
   await ssh.putFile(join(__dirname, '../dist/index.js'), '/root/drgn/dist/index.js')
