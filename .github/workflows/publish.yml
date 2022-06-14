@@ -1,0 +1,98 @@
+name: Publish
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  create-release:
+    runs-on: ubuntu-latest
+
+    outputs:
+      version: ${{ env.VERSION }}
+      release_id: ${{ steps.create-release.outputs.result }}
+    
+    steps:
+      - name: Git Checkout
+        uses: actions/checkout@v2
+
+      - name: Grab Version
+        run: echo "VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+      
+      - name: Grab Changelog
+        run: |
+          CHANGELOG=$(awk -v ver=$VERSION '/^## / { if (p) { exit }; if ($2 == ver) { p=1; next} } p' changelog.md)
+          echo "CHANGELOG<<EOF" >> $GITHUB_ENV
+          echo "$CHANGELOG" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
+      - name: Create Release
+        id: create-release
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const { data } = await github.rest.repos.createRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              tag_name: process.env.VERSION,
+              name: process.env.VERSION,
+              body: process.env.CHANGELOG,
+              draft: true,
+              prerelease: false
+            })
+            
+            return data.id
+  
+  deploy:
+    runs-on: ubuntu-latest
+    needs: create-release
+        
+    steps:
+      - name: Git Checkout
+        uses: actions/checkout@v2
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 18.x
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Build API
+        run: npm run build
+        env:
+          encryptionKey: ${{ secrets.ENCRYPTION_KEY }}
+          jwtSecret: ${{ secrets.JWT_SECRET }}
+          mongo: ${{ secrets.MONGO }}
+          port: ${{ secrets.PORT }}
+          rateLimit: ${{ secrets.RATE_LIMIT }}
+          emailUser: ${{ secrets.EMAIL_USER }}
+          emailPassword: ${{ secrets.EMAIL_PASSWORD }}
+
+      - name: Deploy API
+        run: npm run deploy
+        env:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          privateKey: ${{ secrets.SSH_KEY }}
+
+  publish-release:
+    runs-on: ubuntu-latest
+    needs: [ create-release, deploy ]
+    
+    steps:
+      - name: Publish Release
+        uses: actions/github-script@v6
+        env:
+          RELEASE_ID: ${{ needs.create-release.outputs.release_id }}
+        with:
+          script: |
+            github.rest.repos.updateRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              release_id: process.env.RELEASE_ID,
+              draft: false,
+              prerelease: false
+            })
