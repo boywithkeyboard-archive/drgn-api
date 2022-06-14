@@ -5,7 +5,10 @@ import '@fastify/jwt'
 declare module '@fastify/jwt' {
   interface FastifyJWT {
     payload: { [key: string]: any }
-    user: UserDocument
+    user: {
+      email: string
+      [key: string]: any
+    }
   }
 }
 
