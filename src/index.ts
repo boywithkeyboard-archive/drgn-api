@@ -15,6 +15,8 @@ import mailer from './modules/mailer'
 import userRouter from './routes/users'
 import userSchema from './schemas/user'
 import type { TypeBoxTypeProvider } from '@fastify/type-provider-typebox'
+import validateSession from './modules/validateSession'
+import insightsSchema from './schemas/insights'
 
 /* ................ create server ................ */
 
@@ -24,7 +26,8 @@ const api = fastify({
       strict: 'log',
       keywords: ['kind', 'modifier']
     }
-  }
+  },
+  logger: DEV
 }).withTypeProvider<TypeBoxTypeProvider>()
 
 /* ................ plugins ................ */
@@ -43,7 +46,8 @@ await api.register(fastifyJwt, {
 
 await api.register(fastifyRateLimit, {
   max: RATE_LIMIT,
-  timeWindow: 60000 // a minute
+  timeWindow: '1m',
+  global: true
 })
 
 /* ................ enable caching ................ */
@@ -62,6 +66,37 @@ api.register(serverRouter, {
 
 await api.register(userRouter, {
   prefix: '/users'
+})
+
+/* ................ /insights ................ */
+
+api.post('/insights', {
+  schema: {
+    body: Type.Object({
+      os: Type.String({
+        maxLength: 64
+      }),
+      version: Type.String({
+        minLength: 5,
+        maxLength: 10
+      })
+    })
+  },
+  onRequest: validateSession,
+  // @ts-ignore
+  preHandler: api.rateLimit({
+    max: 1,
+    timeWindow: '30m'
+  })
+}, async request => {
+  const document = new insightsSchema({
+    // @ts-ignore
+    os: request.body.os,
+    // @ts-ignore
+    version: request.body.version
+  })
+
+  await document.save()
 })
 
 /* ................ /login ................ */
@@ -116,8 +151,7 @@ api.post('/login', {
   if (!user)
     throw new Error('invalid email')
 
-  // passwordless login
-  if (user.passwordless) {
+  if (user.passwordless) { // passwordless login
     if (!request.body.token) {
       const verifyToken = await reply.jwtSign({
         email: user.email
@@ -138,19 +172,16 @@ api.post('/login', {
       if (err || decoded.email !== user.email)
         throw new Error('invalid token')
         
-      return {
+      reply.send({
         user,
         token: await reply.jwtSign({
           email: user.email,
           loggedIn: true,
           ip: request.ip
         }, { expiresIn: '30d' })
-      }
+      })
     })
-  }
-
-  // 2fa login
-  if (user.twoFactor) {
+  } else if (user.twoFactor) { // 2fa login
     if (request.body.password !== await decrypt(user.password))
       throw new Error('invalid password')
 
@@ -168,19 +199,18 @@ api.post('/login', {
         ip: request.ip
       }, { expiresIn: '30d' })
     }
-  }
+  } else {
+    if (request.body.password !== await decrypt(user.password))
+      throw new Error('invalid password')
 
-  // default login
-  if (request.body.password !== await decrypt(user.password))
-    throw new Error('invalid password')
-
-  return {
-    user,
-    token: await reply.jwtSign({
-      email: user.email,
-      loggedIn: true,
-      ip: request.ip
-    }, { expiresIn: '30d' })
+    return {
+      user,
+      token: await reply.jwtSign({
+        email: user.email,
+        loggedIn: true,
+        ip: request.ip
+      }, { expiresIn: '30d' })
+    }
   }
 })
 
@@ -200,24 +230,29 @@ api.post('/register', {
     })
   }
 }, async (request, reply) => {
-  if (await userCache.has(request.body.email))
+  const email = request.body.email.toLowerCase()
+
+  if (await userCache.has(email))
     throw new Error('email already taken')
 
-  if (await userSchema.findOne({ email: request.body.email }))
+  const count = await userSchema.count({ email })
+
+  if (count !== 0) {
     throw new Error('email already taken')
-
-  const token = await reply.jwtSign({
-    email: request.body.email,
-    password: request.body.password
-  }, { expiresIn: '10m' })
-
-  await mailer.sendMail({
-    from: '"drgn" <noreply@support.drgnjs.com>',
-    to: request.body.email,
-    subject: 'Verify your account',
-    text: `Hey there! 👋\n\nClick ${DEV ? 'http://127.0.0.1:5000' : 'https://api.drgnjs.com'}/register/complete?token=${token} to get verified and complete your account setup.\n\nBest regards,\nthe drgn.js crew 😎`,
-    html: `<p>Hey there! 👋<br /><br />Click <a href="${DEV ? 'http://127.0.0.1:5000' : 'https://api.drgnjs.com'}/register/complete?token=${token}">here</a> to get verified and complete your account setup.<br /><br />Best regards,<br />the drgn.js crew 😎</p>`
-  })
+  } else {
+    const token = await reply.jwtSign({
+      email: request.body.email,
+      password: request.body.password
+    }, { expiresIn: '10m' })
+  
+    await mailer.sendMail({
+      from: '"drgn" <noreply@support.drgnjs.com>',
+      to: request.body.email,
+      subject: 'Verify your account',
+      text: `Hey there! 👋\n\nClick ${DEV ? 'http://127.0.0.1:5000' : 'https://api.drgnjs.com'}/register/complete?token=${token} to get verified and complete your account setup.\n\nBest regards,\nthe drgn.js crew 😎`,
+      html: `<p>Hey there! 👋<br /><br />Click <a href="${DEV ? 'http://127.0.0.1:5000' : 'https://api.drgnjs.com'}/register/complete?token=${token}">here</a> to get verified and complete your account setup.<br /><br />Best regards,<br />the drgn.js crew 😎</p>`
+    })
+  }
 })
 
 /* ................ /register/complete ................ */
@@ -304,7 +339,9 @@ api.setNotFoundHandler(async (request, reply) => {
 
 /* ................ error ................ */
 
-api.setErrorHandler(async err => {
+api.setErrorHandler(async (err, request, reply) => {
+  reply.code(400)
+
   return {
     statusCode: 400,
     error: 'Bad Request',
