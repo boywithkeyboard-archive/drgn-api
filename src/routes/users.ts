@@ -1,12 +1,20 @@
+import getUser from '../modules/getUser'
 import validateSession from '../modules/validateSession'
+import { UserDocument } from '../schemas/user'
 import type { Router } from '../types'
 
 const userRouter = async (api: Router) => {
   api.addHook('preValidation', validateSession)
 
-  api.get('/users/@me', async request => {
+  api.get('/@me', async request => {
+    const user = await getUser(request.user.email) as UserDocument
+
+    user.password = undefined // in case delete does not work as expected
+
+    delete user.password
+
     return {
-      user: request.user
+      user
     }
   })
 
