@@ -298,12 +298,14 @@ api.get('/download', {
     })
   }
 }, async (request, reply) => {
-  const latestVersion = await globalCache.get('latestVersion')
+  let latestVersion = await globalCache.get('latestVersion')
 
   if (!latestVersion) {
     const { tag_name } = await (await fetch('https://api.github.com/repos/drgnjs/drgn/releases/latest')).json()
 
     await globalCache.set('latestVersion', tag_name)
+
+    latestVersion = tag_name
   }
 
   if (request.query.platform === 'windows')
