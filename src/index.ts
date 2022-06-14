@@ -325,6 +325,10 @@ api.get('/download', {
   throw new Error('invalid platform')
 })
 
+/* ................ status ................ */
+
+api.head('/status', async (request, reply) => {})
+
 /* ................ not found ................ */
 
 api.setNotFoundHandler(async (request, reply) => {
