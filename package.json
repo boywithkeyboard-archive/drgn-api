@@ -7,7 +7,7 @@
     "dev": "concurrently --kill-others \"npm run build:watch\" \"nodemon dist/index.js\"",
     "lint": "eslint src --ext .ts",
     "format": "eslint src --fix",
-    "deploy": "node deploy.mjs",
+    "deploy": "node deploy.js",
     "types": "tsc -w"
   },
   "dependencies": {
