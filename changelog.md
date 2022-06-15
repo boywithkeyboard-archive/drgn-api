@@ -2,7 +2,10 @@
 
 ## Unpublished
 
-*We can't give much away, but it's going to be awesome!*
+### Changes
+
+- upgraded `@types/node` to **17.0.44** ([#79](https://github.com/drgnjs/api/pull/79))
+- upgraded `concurrently` to **7.2.2** ([#80](https://github.com/drgnjs/api/pull/80))
 
 ## v1.0.1
 
