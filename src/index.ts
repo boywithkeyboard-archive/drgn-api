@@ -309,11 +309,11 @@ api.get('/download', {
   }
 
   if (request.query.platform === 'windows')
-    return reply.redirect(`https://github.com/drgnjs/drgn/releases/download/${latestVersion}/drgn_0.0.0_x64_en-US.msi`)
+    return reply.redirect(`https://github.com/drgnjs/drgn/releases/download/${latestVersion}/drgn_${latestVersion.replace('v', '')}_x64_en-US.msi`)
 
   if (request.query.platform === 'linux')
     if (request.query.format === 'deb')
-      return reply.redirect(`https://github.com/drgnjs/drgn/releases/download/${latestVersion}/drgn_0.0.0_amd64.deb`)
+      return reply.redirect(`https://github.com/drgnjs/drgn/releases/download/${latestVersion}/drgn_${latestVersion.replace('v', '')}_amd64.deb`)
     else if (request.query.format === 'tar.gz')
       return reply.redirect(`https://github.com/drgnjs/drgn/releases/download/${latestVersion}/drgn.app.tar.gz`)
     else if (request.query.format === 'AppImage')
@@ -322,7 +322,7 @@ api.get('/download', {
       throw new Error('invalid format')
 
   if (request.query.platform === 'mac')
-    return reply.redirect(`https://github.com/drgnjs/drgn/releases/download/${latestVersion}/drgn_0.0.0_x64.dmg`)
+    return reply.redirect(`https://github.com/drgnjs/drgn/releases/download/${latestVersion}/drgn_${latestVersion.replace('v', '')}_x64.dmg`)
 
   throw new Error('invalid platform')
 })
