@@ -1,6 +1,6 @@
 import getUser from '../modules/getUser'
 import validateSession from '../modules/validateSession'
-import { UserDocument } from '../schemas/users'
+import type { UserDocument } from '../schemas/users'
 import type { Router } from '../types'
 
 const userRouter = async (api: Router) => {

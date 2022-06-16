@@ -1,6 +1,6 @@
-import userSchema from '../schemas/user'
+import userSchema from '../schemas/users'
 import { userCache } from './cache'
-import type { UserDocument } from '../schemas/user'
+import type { UserDocument } from '../schemas/users'
 
 const getUser = async (email: string) => {
   let user: UserDocument | null = await userCache.get(email)

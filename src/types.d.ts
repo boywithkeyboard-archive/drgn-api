@@ -1,4 +1,3 @@
-import type { UserDocument } from './schemas/users'
 import type { FastifyInstance } from 'fastify'
 import '@fastify/jwt'
 

@@ -12,11 +12,11 @@ import decrypt from './modules/decrypt'
 import encrypt from './modules/encrypt'
 import getUser from './modules/getUser'
 import mailer from './modules/mailer'
+import validateSession from './modules/validateSession'
 import userRouter from './routes/users'
+import insightsSchema from './schemas/insights'
 import userSchema from './schemas/users'
 import type { TypeBoxTypeProvider } from '@fastify/type-provider-typebox'
-import validateSession from './modules/validateSession'
-import insightsSchema from './schemas/insights'
 
 /* ................ create server ................ */
 
