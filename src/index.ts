@@ -13,7 +13,7 @@ import encrypt from './modules/encrypt'
 import getUser from './modules/getUser'
 import mailer from './modules/mailer'
 import userRouter from './routes/users'
-import userSchema from './schemas/user'
+import userSchema from './schemas/users'
 import type { TypeBoxTypeProvider } from '@fastify/type-provider-typebox'
 import validateSession from './modules/validateSession'
 import insightsSchema from './schemas/insights'
@@ -317,7 +317,7 @@ api.get('/download', {
     else if (request.query.format === 'tar.gz')
       return reply.redirect(`https://github.com/drgnjs/drgn/releases/download/${latestVersion}/drgn.app.tar.gz`)
     else if (request.query.format === 'AppImage')
-      return reply.redirect(`https://github.com/drgnjs/drgn/releases/download/${latestVersion}/drgn.app.tar.gz`)
+      return reply.redirect(`https://github.com/drgnjs/drgn/releases/download/${latestVersion}/drgn_${latestVersion.replace('v', '')}_amd64.AppImage`)
     else
       throw new Error('invalid format')
 
