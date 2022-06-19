@@ -1,6 +1,6 @@
+import type { TypeBoxTypeProvider } from '@fastify/type-provider-typebox'
 import type { FastifyInstance } from 'fastify'
 import '@fastify/jwt'
-import { TypeBoxTypeProvider } from '@fastify/type-provider-typebox'
 
 declare module '@fastify/jwt' {
   interface FastifyJWT {
