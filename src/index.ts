@@ -13,6 +13,7 @@ import encrypt from './modules/encrypt'
 import getUser from './modules/getUser'
 import mailer from './modules/mailer'
 import validateSession from './modules/validateSession'
+import serverRouter from './routes/servers'
 import userRouter from './routes/users'
 import insightsSchema from './schemas/insights'
 import userSchema from './schemas/users'
@@ -58,12 +59,12 @@ api.addHook('onRequest', async (request, reply) => {
 
 /* ................ routers ................ */
 
-/*
-api.register(serverRouter, {
+// @ts-ignore
+await api.register(serverRouter, {
   prefix: '/servers'
 })
-*/
 
+// @ts-ignore
 await api.register(userRouter, {
   prefix: '/users'
 })
@@ -329,7 +330,7 @@ api.get('/download', {
 
 /* ................ status ................ */
 
-api.head('/status', async (request, reply) => {})
+api.head('/status', async () => {})
 
 /* ................ not found ................ */
 
