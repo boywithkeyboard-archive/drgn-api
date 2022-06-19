@@ -8,6 +8,10 @@ const userCache = new MemoryCache({
   autoclear: true
 })
 
+const serverCache = new MemoryCache({
+  autoclear: true
+})
+
 const globalCache = new MemoryCache()
 
 const loginAttemptsCache = new MemoryCache({
@@ -18,5 +22,6 @@ export {
   globalCache,
   unverifiedUserCache,
   userCache,
+  serverCache,
   loginAttemptsCache
 }
