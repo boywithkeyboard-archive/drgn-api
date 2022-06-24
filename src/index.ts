@@ -27,8 +27,7 @@ const api = fastify({
       strict: 'log',
       keywords: ['kind', 'modifier']
     }
-  },
-  logger: DEV
+  }
 }).withTypeProvider<TypeBoxTypeProvider>()
 
 /* ................ plugins ................ */
