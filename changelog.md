@@ -1,5 +1,19 @@
 # Changelog
 
+## Unpublished
+
+### Dependencies
+
+- upgraded `eslint` to **8.18.0** in [#88](https://github.com/drgnjs/api/pull/88)
+- upgraded `cachu` to **6.0.0-canary.4** in [#89](https://github.com/drgnjs/api/pull/89)
+- upgraded `@typescript-eslint/eslint-plugin` to **5.29.0** in [#90](https://github.com/drgnjs/api/pull/90)
+- upgraded `@typescript-eslint/parser` to **5.29.0** in [#91](https://github.com/drgnjs/api/pull/91)
+- upgraded `mongoose` to **6.4.0** in [#92](https://github.com/drgnjs/api/pull/92)
+- upgraded `fastify` to **4.1.0** in [#93](https://github.com/drgnjs/api/pull/93)
+- upgraded `esbuild` to **0.14.47** in [#94](https://github.com/drgnjs/api/pull/94)
+- upgraded `discord.js` to **13.8.1** in [#95](https://github.com/drgnjs/api/pull/95)
+- upgraded `nodemon` to **2.0.18** in [#96](https://github.com/drgnjs/api/pull/96)
+
 ## v1.1.0
 
 ### Features
