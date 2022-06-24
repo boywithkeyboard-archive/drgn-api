@@ -1,5 +1,21 @@
 # Changelog
 
+## v1.1.0
+
+### Features
+
+- added `/servers` endpoints
+- added server schema and cache
+
+### Changes
+
+- removed unnecessary asynchronous wrapper function in `deploy` script
+
+### Dependencies
+
+- upgraded `esbuild` to **0.14.45** in [#85](https://github.com/drgnjs/api/pull/85)
+- upgraded `typescript` to **4.7.4** in [#86](https://github.com/drgnjs/api/pull/86)
+
 ## v1.0.2
 
 ### Bug Fixes
@@ -7,7 +23,7 @@
 - fixed download endpoint for `AppImage` format
 - fixed dependencies conflicts *(no impact)*
 
-### Changes
+### Dependencies
 
 - upgraded `concurrently` to **7.2.2** in [#80](https://github.com/drgnjs/api/pull/80)
 - upgraded `cachu` to **6.0.0-canary.3** in [#81](https://github.com/drgnjs/api/pull/81)
