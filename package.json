@@ -19,7 +19,7 @@
     "@fastify/rate-limit": "^7.0.0",
     "@fastify/type-provider-typebox": "^1.0.0",
     "@sinclair/typebox": "^0.23.5",
-    "cachu": "^6.0.0-canary.3",
+    "cachu": "^6.0.0-canary.4",
     "dayjs": "^1.11.3",
     "discord.js": "^13.8.0",
     "dotenv": "^16.0.1",
