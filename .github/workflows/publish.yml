@@ -72,8 +72,8 @@ jobs:
           emailPassword: ${{ secrets.EMAIL_PASSWORD }}
 
       - name: Deploy API
-        run: npm run deploy
-        env:
+        uses: azurydev/deploy@v1
+        with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           privateKey: ${{ secrets.SSH_KEY }}
