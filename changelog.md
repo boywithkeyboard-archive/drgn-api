@@ -1,6 +1,10 @@
 # Changelog
 
-## Unpublished
+## v1.1.1
+
+### Changes
+
+- migrated to `azurydev/deploy` action for deployments
 
 ### Dependencies
 
