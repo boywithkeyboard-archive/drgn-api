@@ -72,11 +72,14 @@ jobs:
           emailPassword: ${{ secrets.EMAIL_PASSWORD }}
 
       - name: Deploy API
-        uses: azurydev/deploy@v1
+        uses: azurydev/deploy@v0
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           privateKey: ${{ secrets.SSH_KEY }}
+          destination: /root/drgn
+          dependencies: true
+          pm2: drgn
 
   publish-release:
     runs-on: ubuntu-latest
