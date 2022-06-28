@@ -72,7 +72,7 @@ jobs:
           emailPassword: ${{ secrets.EMAIL_PASSWORD }}
 
       - name: Deploy API
-        uses: azurydev/deploy-action@v0.0.4
+        uses: azurydev/deploy-action@v0
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
