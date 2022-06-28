@@ -1,6 +1,14 @@
 # Changelog
 
+## v1.1.9
+
+### Changes
+
+- removed specific version of `azurydev/deploy-action` in workflow
+
 ## v1.1.8
+
+### Dependencies
 
 - upgraded `@typescript-eslint/parser` to **5.30.0** in [#97](https://github.com/drgnjs/api/pull/97)
 - upgraded `@typescript-eslint/eslint-plugin` to **5.30.0** in [#98](https://github.com/drgnjs/api/pull/98)
