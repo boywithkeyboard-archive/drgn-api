@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.1.8
+
+- upgraded `@typescript-eslint/parser` to **5.30.0** in [#97](https://github.com/drgnjs/api/pull/97)
+- upgraded `@typescript-eslint/eslint-plugin` to **5.30.0** in [#98](https://github.com/drgnjs/api/pull/98)
+- upgraded `mongoose` to **6.4.1** in [#99](https://github.com/drgnjs/api/pull/99)
+
 ## v1.1.7
 
 ### Changes
