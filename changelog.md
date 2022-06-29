@@ -1,5 +1,16 @@
 # Changelog
 
+## v1.1.11
+
+### Changes
+
+- added `version:` scripts
+- disabled `@typescript-eslint/ban-ts-comment` eslint rule
+
+### Dependencies
+
+- upgraded `@types/ssh2` to **1.11.0** in [#100](https://github.com/drgnjs/api/pull/100)
+
 ## v1.1.10
 
 ### Changes
