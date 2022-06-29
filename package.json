@@ -8,6 +8,11 @@
     "dev": "concurrently --kill-others \"npm run build:watch\" \"nodemon dist/index.js\"",
     "lint": "eslint src --ext .ts",
     "format": "eslint src --fix",
+    "pre:version": "npm run format",
+    "version:canary": "npm run pre:version && npm version prerelease --preid=canary",
+    "version:patch": "npm run pre:version && npm version patch",
+    "version:minor": "npm run pre:version && npm version minor",
+    "version:major": "npm run pre:version && npm version major",
     "deploy": "node scripts/deploy.js",
     "types": "tsc -w"
   },
