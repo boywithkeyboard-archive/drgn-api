@@ -329,7 +329,9 @@ api.get('/download', {
 
 /* ................ status ................ */
 
-api.head('/status', async () => {})
+api.head('/status', async () => {
+  // respond without a body
+})
 
 /* ................ not found ................ */
 
