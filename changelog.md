@@ -1,5 +1,16 @@
 # Changelog
 
+## v1.1.12
+
+### Dependencies
+
+- upgraded `nodemailer` to **6.7.6** in [#101](https://github.com/drgnjs/api/pull/101)
+- upgraded `esbuild` to **0.14.48** in [#102](https://github.com/drgnjs/api/pull/102)
+- upgraded `@fastify/jwt` to **6.2.0** in [#103](https://github.com/drgnjs/api/pull/103)
+- upgraded `@types/ssh2` to **1.11.2** in [#105](https://github.com/drgnjs/api/pull/105)
+- upgraded `@typescript-eslint/parser` to **5.30.3** in [#106](https://github.com/drgnjs/api/pull/106)
+- upgraded `@typescript-eslint/eslint-plugin` to **5.30.3** in [#107](https://github.com/drgnjs/api/pull/107)
+
 ## v1.1.11
 
 ### Changes
