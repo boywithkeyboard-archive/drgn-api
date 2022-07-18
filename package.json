@@ -26,7 +26,7 @@
     "@sinclair/typebox": "^0.23.5",
     "cachu": "^6.0.0-canary.4",
     "dayjs": "^1.11.3",
-    "discord.js": "^13.8.1",
+    "discord.js": "^14.0.2",
     "dotenv": "^16.0.1",
     "fastify": "^4.1.0",
     "mongoose": "^6.4.1",
